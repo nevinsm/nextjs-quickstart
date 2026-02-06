@@ -1,18 +1,12 @@
-'use client';
-
 import Link from 'next/link';
 
+import { SignOutButton } from '@/components/app-shell/sign-out-button';
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { getSessionUser } from '@/lib/auth/session';
 
-export function AppHeader() {
+export async function AppHeader() {
+  const user = await getSessionUser();
+
   return (
     <header className="border-b border-border bg-background/80 backdrop-blur">
       <div className="container flex h-16 items-center justify-between">
@@ -30,26 +24,16 @@ export function AppHeader() {
           </nav>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="sm">
-            Sign in
-          </Button>
-          <Button variant="outline" size="sm">
-            Sign out
-          </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="sm">
-                User menu
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuLabel>Profile</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Account settings</DropdownMenuItem>
-              <DropdownMenuItem>Billing</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {user ? (
+            <>
+              <p className="hidden text-sm text-muted-foreground sm:block">{user.email}</p>
+              <SignOutButton />
+            </>
+          ) : (
+            <Button asChild size="sm">
+              <Link href="/auth/sign-in">Sign in</Link>
+            </Button>
+          )}
         </div>
       </div>
     </header>
