@@ -39,3 +39,6 @@ jobs:
 
       - name: Run build
         run: pnpm build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY: ci_dummy_publishable_key
