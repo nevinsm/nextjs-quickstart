@@ -1,0 +1,21 @@
+meta {
+  name: Session POST
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/auth/session
+  body: json
+  auth: none
+}
+
+headers {
+  content-type: application/json
+}
+
+body:json {
+  {
+    "accessToken": "{{accessToken}}"
+  }
+}

@@ -1,0 +1,27 @@
+meta {
+  name: AI Scaffold POST
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/ai
+  body: json
+  auth: none
+}
+
+headers {
+  content-type: application/json
+}
+
+body:json {
+  {
+    "prompt": "Generate a one-line summary of this project.",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "metadata": {
+      "projectId": "abc123",
+      "traceId": "bruno-local-test"
+    }
+  }
+}
