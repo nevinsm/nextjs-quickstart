@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 
 import { ProjectsDashboard } from '@/features/projects/projects-dashboard';
+import { UploadsCard } from '@/features/uploads/uploads-card';
 import { getSessionUser } from '@/lib/auth/session';
 
 export default async function DashboardPage() {
@@ -17,6 +18,7 @@ export default async function DashboardPage() {
         <p className="text-sm text-muted-foreground">Signed in as {user.email}</p>
       </div>
       <ProjectsDashboard />
+      <UploadsCard />
     </main>
   );
 }
