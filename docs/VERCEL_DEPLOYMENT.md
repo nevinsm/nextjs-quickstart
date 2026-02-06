@@ -10,6 +10,7 @@ Set these in your Vercel project (`Settings -> Environment Variables`) for `Prod
 | --- | --- | --- |
 | `NEXT_PUBLIC_SUPABASE_URL` | Yes | Supabase project URL (for example `https://<project-ref>.supabase.co`). |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY` | Yes | Supabase publishable/anon key used by browser and server clients. |
+| `SUPABASE_SECRET_KEY` | Yes | Supabase secret key used only in backend components that need full access to the project data. |
 
 These are validated at runtime in `src/env.ts`.
 
