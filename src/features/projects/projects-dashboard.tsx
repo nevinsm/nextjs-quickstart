@@ -1,15 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { createProject } from '@/features/projects/actions';
+import { CreateProjectForm } from '@/features/projects/components/create-project-form';
+import { ProjectsList } from '@/features/projects/components/projects-list';
+import { listProjects } from '@/features/projects/data-access';
 import { getSessionToken } from '@/lib/auth/session';
-import { createServerClient } from '@/lib/supabase/server-client';
-
-type Project = {
-  id: string;
-  name: string;
-  created_at: string;
-};
 
 export async function ProjectsDashboard() {
   const token = await getSessionToken();
@@ -18,17 +11,7 @@ export async function ProjectsDashboard() {
     return null;
   }
 
-  const supabase = createServerClient(token);
-  const { data: projects, error } = await supabase
-    .from('projects')
-    .select('id, name, created_at')
-    .order('created_at', { ascending: false });
-
-  if (error) {
-    throw new Error(`Failed to load projects: ${error.message}`);
-  }
-
-  const projectRows = projects ?? [];
+  const projectRows = await listProjects(token);
 
   return (
     <div className="grid gap-4 md:grid-cols-2">
@@ -37,12 +20,7 @@ export async function ProjectsDashboard() {
           <CardTitle>Create project</CardTitle>
         </CardHeader>
         <CardContent>
-          <form action={createProject} className="space-y-3">
-            <Input name="name" placeholder="Project name" required />
-            <Button type="submit">
-              Add project
-            </Button>
-          </form>
+          <CreateProjectForm />
         </CardContent>
       </Card>
       <Card>
@@ -50,20 +28,7 @@ export async function ProjectsDashboard() {
           <CardTitle>Your projects</CardTitle>
         </CardHeader>
         <CardContent>
-          {projectRows.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No projects yet.</p>
-          ) : (
-            <ul className="space-y-2">
-              {projectRows.map((project: Project) => (
-                <li key={project.id} className="rounded-md border p-3">
-                  <p className="font-medium">{project.name}</p>
-                  <p className="text-xs text-muted-foreground">
-                    Created {new Date(project.created_at).toLocaleString()}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          )}
+          <ProjectsList projects={projectRows} />
         </CardContent>
       </Card>
     </div>
